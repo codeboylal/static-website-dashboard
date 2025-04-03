@@ -1,11 +1,21 @@
 pipeline {
     agent any
+
+    environment {
+        REPO_URL = 'https://github.com/codeboylal/static-website-dashboard.git'
+        BRANCH_NAME = 'devops'
+        CREDENTIALS_ID = 'devops-morning-git-token'
+    }
     
     stages {
-        stage ('Fetch Code') {
-            steps{
-                echo 'Cloning Code From Github'
-                git url:'https://github.com/codeboylal/static-website-dashboard.git', branch: 'devops'
+        
+        stage('Code Fetch') {
+            steps {
+                echo 'Fetching code from GitHub'
+                checkout([$class: 'GitSCM', 
+                    branches: [[name: "*/${BRANCH_NAME}"]], 
+                    userRemoteConfigs: [[url: REPO_URL, credentialsId: CREDENTIALS_ID]]
+                ])
             }
         }
 
