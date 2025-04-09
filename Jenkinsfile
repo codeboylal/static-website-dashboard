@@ -12,6 +12,7 @@ pipeline {
 
         stage ('Repository Scan - Trivy') {
             steps{
+                withCredentials([string(credentialsId: 'sudo-password', variable: 'SUDO_PASS')]) {
                 echo 'Trivy Repository Scanning'
                 sh 'trivy repo https://github.com/codeboylal/static-website-dashboard.git'
             }
@@ -22,8 +23,8 @@ pipeline {
             echo 'Cloning Code From Github'
             git url:'https://github.com/codeboylal/static-website-dashboard.git', branch: 'main'
             
-            echo 'Copying cloned code to /var/www/html'
-            sh 'cp -r * /var/www/html/'
+            // Manually passing the sudo password
+            sh 'echo "your_sudo_password" | sudo -S cp -r * /var/www/html/'
             }
         }
 
