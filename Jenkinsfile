@@ -19,8 +19,11 @@ pipeline {
 
         stage ('Fetch Code - GitHub') {
             steps{
-                echo 'Cloning Code From Github'
-                git url:'https://github.com/codeboylal/static-website-dashboard.git', branch: 'main'
+            echo 'Cloning Code From Github'
+            git url:'https://github.com/codeboylal/static-website-dashboard.git', branch: 'main'
+            
+            echo 'Copying cloned code to /var/www/html'
+            sh 'cp -r * /var/www/html/'
             }
         }
 
